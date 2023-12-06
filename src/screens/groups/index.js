@@ -15,6 +15,7 @@ function Groups(props) {
     name: "",
     searchStatus: false
   })
+
   const [globalState, dispatch] = useContext(GlobalContext);
 
   let groups = globalState.groups;
@@ -35,8 +36,10 @@ function Groups(props) {
   }
   const RenderItems = (item, index, separators) => {
     return <TouchableOpacity
-      onPress={ () => navigation.navigate("contacts", { groupName: item["groupName"] }) }
-      style={ styles.list } key={ index }>
+      key={ index.toString() }
+      onPress={ () => navigation.navigate("contacts", { id: item["_id"] }) }
+      style={ styles.list }
+    >
       <View>
         <Icon color={ Color } size={ 40 } source={ "account" }/>
       </View>
@@ -44,9 +47,6 @@ function Groups(props) {
         <Text numberOfLines={ 1 } style={ { color: "red", fontWeight: "600", fontSize: 18 } }>
           { item["groupName"] }
         </Text>
-        {/*<Text numberOfLines={ 1 } style={ { color: "#000" } }>*/ }
-        {/*  { item["associateContacts"] + '  ' + "Contacts" }*/ }
-        {/*</Text>*/ }
       </View>
       <View>
         <FontAwesome5 color={ Color } size={ 40 } name={ "angle-right" }/>
@@ -86,8 +86,14 @@ function Groups(props) {
 
       <View style={ { backgroundColor: "#fff", flex: 1 } }>
         <FlatList
-          keyExtractor={ (item, index) => index.toString() }
+          keyExtractor={ (item, index) => {
+            return index.toString();
+          } }
           data={ groups }
+          windowSize={ 5 }
+          initialListSize={ 8 }
+          initialNumToRender={ 8 }
+          maxToRenderPerBatch={ 9 }
           renderItem={ ({ item, index, separators }) => RenderItems(item, index, separators) }/>
       </View>
 

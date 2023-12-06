@@ -34,7 +34,8 @@ const AddContact = ({ status, setStatus, value, callback }) => {
 
   useEffect(() => {
     if (groups && groups.length > 0) {
-      setFormData({ ...formData, selectGroup: groups[0]["groupName"] })
+      console.log(groups, "11111111111111111111")
+      setFormData({ ...formData, selectGroup: groups[0]["_id"] })
     }
   }, []);
 
@@ -95,11 +96,11 @@ const AddContact = ({ status, setStatus, value, callback }) => {
             <View style={ { margin: 10, borderWidth: .8, borderRadius: 5 } }>
               <Picker
                 dropdownIconColor={ "gray" }
-                style={ { borderWidth: 1 } }
+                style={ { borderWidth: 1, borderColor: "red", color: "gray" } }
                 selectedValue={ !!formData?.selectGroup ? formData.selectGroup : null }
                 onValueChange={ (itemValue, itemIndex) => OnChange("selectGroup", itemValue) }
               >
-                { groups && groups.map(({ groupName }) => <Picker.Item label={ groupName } value={ groupName }/>) }
+                { groups && groups.map(({ groupName, _id }) => <Picker.Item label={ groupName } value={ _id }/>) }
               </Picker>
             </View>
             <TextInput
@@ -112,7 +113,7 @@ const AddContact = ({ status, setStatus, value, callback }) => {
             />
             <View style={ { margin: 10, borderWidth: .8, borderRadius: 5 } }>
               <Picker
-                style={ { borderWidth: 1 } }
+                style={ { borderWidth: 1, borderColor: "red", color: "gray" } }
                 selectedValue={ !!formData?.countryCode ? formData.countryCode : null }
                 onValueChange={ (itemValue, itemIndex) => OnChange("countryCode", itemValue) }
               >

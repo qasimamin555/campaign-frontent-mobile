@@ -10,6 +10,8 @@ import SignUp                         from './screens/singUp/signup';
 import Welcome                        from './screens/welcome';
 import ImportContact                  from "./screens/contacts/importContact"
 import { GlobalContext }              from './store';
+import Message                        from "./screens/sendMessages";
+import SendMessage                    from "./screens/sendMessages/sendMessage";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +21,7 @@ class Router extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={ "main" }>
+        <Stack.Navigator initialRouteName={ "message" }>
 
           <Stack.Screen name="welcome" component={ Welcome } options={ { headerShown: false } }/>
           <Stack.Screen name="signup" component={ SignUp } options={ { headerShown: false } }/>
@@ -30,6 +32,9 @@ class Router extends Component {
           <Stack.Screen name={ "importManually" } component={ ImportManually } options={ { headerShown: false } }/>
 
           <Stack.Screen name={ "groups" } component={ Groups } options={ { headerShown: false } }/>
+
+          <Stack.Screen name={ "message" } component={ Message } options={ { headerShown: false } }/>
+          <Stack.Screen name={ "send" } component={ SendMessage } options={ { headerShown: false } }/>
 
         </Stack.Navigator>
       </NavigationContainer>

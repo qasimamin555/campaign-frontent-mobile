@@ -14,12 +14,12 @@ const ImportManually = ({ navigation }) => {
 
   }
 
-  const handleTextLayout = (event) => {
-    const { lines } = event.nativeEvent;
-
-    // Check if there is more than one line
-    console.log(lines, "$$$$$$$$$$$$$$")
-  };
+  const handleKeyPress = (event) => {
+    if (event.nativeEvent.key === 'Enter') {
+      // User pressed Enter key
+      console.log('New line entered');
+    }
+  }
 
   return (
     <React.Fragment>
@@ -30,8 +30,8 @@ const ImportManually = ({ navigation }) => {
 
       <View style={ styles.container }>
         <TextInput
+          onKeyPress={ handleKeyPress }
           style={ { borderWidth: 1, borderColor: Color } }
-          onLayout={ handleTextLayout }
           mode={ "outlined" }
           multiline={ true }
           numberOfLines={ 10 }

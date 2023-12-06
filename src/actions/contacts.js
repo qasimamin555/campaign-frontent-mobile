@@ -2,11 +2,10 @@ import { ToastAndroid } from 'react-native';
 import { serverURL }    from "../const";
 import axios            from "axios";
 
-const getAllContacts = async (associateGroup) => {
+const getAllContacts = async (id) => {
   let URL = serverURL + "/contacts";
-  console.log("API is calling");
   return axios.get(URL, {
-    params: { data: associateGroup }
+    params: { data: id }
   })
     .then(result => {
       if (result?.data?.success) {
@@ -18,7 +17,7 @@ const getAllContacts = async (associateGroup) => {
       ToastAndroid.showWithGravity(
         err.message,
         ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
+        ToastAndroid.BOTTOM,
       )
     })
 }
@@ -38,7 +37,7 @@ const AddContacts = async (data) => {
       ToastAndroid.showWithGravity(
         err.message,
         ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
+        ToastAndroid.BOTTOM,
       )
     })
 }
@@ -57,8 +56,24 @@ const AddMultiContacts = async (data) => {
       ToastAndroid.showWithGravity(
         err.message,
         ToastAndroid.SHORT,
-        ToastAndroid.CENTER,
+        ToastAndroid.BOTTOM,
       )
     })
 }
-export { getAllContacts, AddContacts, AddMultiContacts }
+
+const deleteContacts = async (id) => {
+  let URL = serverURL + `/deleteContacts/${ id }`;
+
+  return axios
+    .delete(URL)
+    .then(response => {
+      if (response?.data?.success) {
+        return response.data.success;
+      }
+    })
+    .catch(err => {
+      console.log(err.response)
+    })
+}
+
+export { getAllContacts, AddContacts, AddMultiContacts, deleteContacts }

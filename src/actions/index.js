@@ -1,4 +1,13 @@
-import { getAllContacts, AddContacts, AddMultiContacts } from "./contacts";
-import { getAllGroups, AddGroup }                        from "./group"
+import { getAllContacts, AddContacts, AddMultiContacts, deleteContacts } from "./contacts";
+import { getAllGroups, AddGroup, updateGroup, deleteGroup }              from "./group"
 
-export { getAllContacts, getAllGroups, AddGroup, AddContacts, AddMultiContacts }
+export {
+  getAllContacts,
+  getAllGroups,
+  AddGroup,
+  AddContacts,
+  deleteContacts,
+  AddMultiContacts,
+  updateGroup,
+  deleteGroup
+}

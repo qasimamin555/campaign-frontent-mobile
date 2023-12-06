@@ -61,7 +61,7 @@ const ImportContact = (props) => {
         ToastAndroid.showWithGravity(
           e.message,
           ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
+          ToastAndroid.BOTTOM,
         )
       })
 
@@ -75,7 +75,7 @@ const ImportContact = (props) => {
           mapData = [...mapData,
             {
               contactName: displayName,
-              contactNumber: phoneNumbers[0]["number"],
+              contactNumber: phoneNumbers?.[0]?.["number"] ? phoneNumbers[0]["number"] : "NAN",
               countryCode: "pk",
               id: id,
               mark: true,
@@ -88,7 +88,7 @@ const ImportContact = (props) => {
         ToastAndroid.showWithGravity(
           e.message,
           ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
+          ToastAndroid.BOTTOM,
         )
       });
   }
@@ -111,7 +111,7 @@ const ImportContact = (props) => {
               ToastAndroid.showWithGravity(
                 "Contacts imported successfully",
                 ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
+                ToastAndroid.BOTTOM,
               )
               dispatch({ type: SET_CONTACT_ACTION, payload: true })
               navigation.navigate("contacts", { groupName: selectedValue });
@@ -166,7 +166,7 @@ const ImportContact = (props) => {
 
         <View style={ { margin: 10, borderWidth: 1, borderColor: "#CF1000", borderRadius: 5 } }>
           <Picker
-            style={ { borderWidth: 1, borderColor: "red" } }
+            style={ { borderWidth: 1, borderColor: "red", color: "gray" } }
             selectedValue={ selectedValue }
             onValueChange={ (itemValue, itemIndex) => {
               setSelectedValue(itemValue);

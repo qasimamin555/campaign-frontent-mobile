@@ -23,17 +23,24 @@ import {
 import CustomHeader                                            from '../../components/header/header';
 import { GlobalContext }                                       from '../../store';
 import { SET_ALL_CONTACTS, SET_CONTACT_ACTION }                from '../../store/const';
+import editModal                                               from './assets/editModal';
+import EditModal                                               from './assets/editModal';
+import SaveModal                                               from './assets/saveModal';
 import ImportContact                                           from './importContact';
 import MyModal                                                 from './modal';
+
 const Contact = (props) => {
   const { navigation, route } = props;
-  const groupName = route?.params?.groupName;
+  const id = route?.params?.id;
   const [state, setState] = useState({
     list: [],
     showModal: false,
     loading: true,
     contactCalling: false,
-    editable: false
+    editable: false,
+    editData: {},
+    saveable: false,
+    selectedContacts: []
   });
   const [selectedValue, setSelectedValue] = useState();
   const [globalState, dispatch] = useContext(GlobalContext);
@@ -43,9 +50,8 @@ const Contact = (props) => {
   const contactAction = globalState.contactAction;
 
   useEffect(() => {
-    setSelectedValue(groupName);
-    console.log("Calling useEffect with unmounting")
-  }, [groupName]);
+    setSelectedValue(id);
+  }, [id]);
 
   useEffect(() => {
     if (groups?.length === 0) {
@@ -55,12 +61,12 @@ const Contact = (props) => {
   }, [groups]);
 
   useEffect(() => {
-    console.log(contactAction, "Is calling ")
-    let group = !!selectedValue ? selectedValue : groups.length > 0 ? groups[0]["groupName"] : null;
-    if (group) {
+    let groupId = !!selectedValue ? selectedValue : groups.length > 0 ? groups[0]["_id"] : null;
+
+    if (groupId) {
       dispatch({ type: SET_ALL_CONTACTS, payload: [] });
       setState({ ...state, loading: true })
-      getAllContacts(group)
+      getAllContacts(groupId)
         .then(response => {
           setState({ ...state, loading: false, contactCalling: false });
           dispatch({ type: SET_ALL_CONTACTS, payload: response })
@@ -69,7 +75,6 @@ const Contact = (props) => {
     }
   }, [selectedValue, state.contactCalling, contactAction]);
   const RenderItems = (item, index, separators) => {
-    // if (!!selectedValue && item.selectedValue === selectedValue) {
     return <TouchableOpacity style={ styles.list } key={ separators }>
       <View>
         <Text style={ { color: "red", fontWeight: "600", fontSize: 18 } }>
@@ -80,21 +85,44 @@ const Contact = (props) => {
         </Text>
       </View>
     </TouchableOpacity>
-    // }
   }
   const callback = () => setState({ ...state, contactCalling: true });
+  const editGroup = () => {
+    let group = groups.length > 0 ? groups[0] : null;
+    if (!!selectedValue) {
+      let findValue = groups.find(({ _id }) => _id === selectedValue);
+      if (findValue) {
+        setState({ ...state, editable: true, editData: findValue });
+      }
+    }
+    else {
+      setState({ ...state, editable: true, editData: group });
+    }
+  }
+  const saveContact = () => {
+    setState({ ...state, saveable: true });
+  }
 
   return (
     <React.Fragment>
+      <EditModal
+        navigation={ navigation }
+        data={ state.editData }
+        visible={ state.editable }
+        callback={ () => setState({ ...state, editable: false }) }
+      />
+      <SaveModal
+        saveVisible={ state.saveable }
+        navigation={ navigation }
+        callback={ () => setState({ ...state, saveable: false }) }
+      />
       <CustomHeader
         navigation={ navigation }
         title={ "Contact List" }
-        rightIcons={ [{ icon: "pen" }, { icon: "floppy" }, { icon: "magnify" }] }
+        rightIcons={ [{ icon: "magnify" }, { icon: "pen" }, { icon: "floppy" }] }
         callback={ (data) => {
-          console.log(data, "#####");
-          if (data === "pen") {
-            setState({ ...state, editable: true })
-          }
+          if (data === "pen") editGroup();
+          else if (data === "floppy") saveContact();
         } }
       />
 
@@ -115,7 +143,13 @@ const Contact = (props) => {
             }>
             {
               groups.length > 0
-              && groups.map(({ groupName }, key) => <Picker.Item key={ key } label={ groupName } value={ groupName }/>)
+              && groups.map(({ groupName, _id }, key) => {
+                return <Picker.Item
+                  key={ key }
+                  label={ groupName }
+                  value={ _id }
+                />
+              })
             }
           </Picker>
         </View>

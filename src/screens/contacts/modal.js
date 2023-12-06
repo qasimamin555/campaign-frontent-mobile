@@ -35,7 +35,6 @@ const MyComponent = ({ status, navigation, value, callback, editable, editableMo
     }
   }, []);
 
-  console.log(editable, "%%%%%%%%%%%%")
   return (
     <View style={ styles.container }>
       <AddContact
@@ -83,16 +82,6 @@ const MyComponent = ({ status, navigation, value, callback, editable, editableMo
               uppercase={ true }
               color={ fontColor }
               label={ "Import Contacts" }
-              style={ styles.buttons }
-            />
-            <FAB
-              onPress={ () => {
-                navigation.navigate("importManually")
-                hideModal();
-              } }
-              uppercase={ true }
-              color={ fontColor }
-              label={ "Import manually" }
               style={ styles.buttons }
             />
           </View>

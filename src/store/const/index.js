@@ -1,4 +1,3 @@
 export const SET_ALL_CONTACTS = "SET_ALL_CONTACTS";
 export const SET_ALL_GROUPS = "SET_ALL_GROUPS";
-
 export const SET_CONTACT_ACTION = "SET_CONTACT_ACTION"
